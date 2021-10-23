@@ -1,63 +1,149 @@
-#proprietatea 2
-def get_longest_all_primes(l):
+def  get_longest_all_primes(l):
     '''
-    determina daca o lista este formata doar din nr palindroame
-    :param l: lista de nr intregi
-    :return: true daca are doar elem palindroame sau false in caz contrar
+    determina daca toate nr. dintr-o lista sunt prime
+    :param l: lista de nr. intregi
+    :return: True, daca toate nr. din l sunt prime sau False, in caz contrar
     '''
     for x in l:
-        if x<2:
-            print("Nu")
+        if x < 2:
+            return False
         else:
-            for i in range(2,x//2 +1):
+            for i in range(2,x//2+1):
                 if x % i == 0:
                     return False
-        return True
-def test_get_longest_all_primes():
-    assert get_longest_all_primes([]) is True
-    assert get_longest_all_primes([121,1000,333]) is False
-    assert get_longest_all_primes([3,5,7]) is True
-    assert get_longest_all_primes([121,333,444,23]) is False
-def subsecventaMaxPrime(l):
+    return True
+def test_get_longest_all_primies():
+    assert  get_longest_all_primes([]) is True
+    assert get_longest_all_primes([1,2,3,3]) is False
+    assert get_longest_all_primes([2,3,3]) is True
+def SubsecventaMaxElementePrime(l):
     '''
-    determina cea mai lunga subsecventa de nr palindroame
-    :param l: lista de nr intregi
-    :return: cea mai lunga subsecventa de nr palindroame
+    determina cea mai lunga subsecventa de nr. divizibile cu 10
+    :param l: lista de nr. intregi
+    :return: cea mai lunga subsecventa de nr. divizibile cu 10 din l
     '''
-    subsecventaMax=[]
-    for i in range(len(l)): # primul pas: i=0 j=1 si se verifica lista de la 0 la 1
-        for j in range (i,len(l)): #verifica daca acea lista are toate elementele prime
+    subsecventaMax = []
+    for i in range(len(l)):
+        for j in range(i, len(l)):
             if get_longest_all_primes(l[i:j+1]) and len(l[i:j+1]) > len(subsecventaMax):
-                subsecventaMax = l[i:j+1] # daca se gaseste o subsecventa cu toate nr prime se salveaza aici
+                subsecventaMax = l[i:j+1]
     return subsecventaMax
-def TestSubsecventaMaxPrime():
-    assert subsecventaMaxPrime([]) == []
-    assert subsecventaMaxPrime([11,13,333]) == [11,13]
-    assert subsecventaMaxPrime([14,12,13,16,17,23]) == [17,23]
+def testSubsecventaMaxElementePrime():
+    assert SubsecventaMaxElementePrime([]) == []
+    assert SubsecventaMaxElementePalindroame([1,2,3,3]) == [2,3,3]
+def get_longest_all_palindromes(l):
+    '''
+    determina daca toate nr. dintr-o lista sunt palindroame
+    :param l: lista de nr. intregi
+    :return: True, daca toate nr. din l sunt palindroame sau False, in caz contrar
+    '''
+    for x in l:
+        cx=x
+        inv = 0
+        while cx!=0:
+            inv = inv * 10 + cx %10
+            cx = cx// 10
+        if inv != x:
+            return False
+    return True
+
+def test_get_longest_all_palindromes():
+    assert get_longest_all_palindromes([1, 2, 3]) is True
+    assert get_longest_all_palindromes([13, 11, 10]) is False
+    assert get_longest_all_palindromes([33, 11, 21, 55, 12]) is False
+    assert get_longest_all_palindromes([]) is True
+
+def SubsecventaMaxElementePalindroame(l):
+    '''
+    determina cea mai lunga subsecventa de nr. palindroame
+    :param l: lista de nr. intregi
+    :return: cea mai lunga subsecventa de nr. palindroame din l
+    '''
+    SubsecventaMax = []
+    for i in range(len(l)):
+        for j in range(i, len(l)):
+            if get_longest_all_palindromes(l[i:j+1]) and len(l[i:j+1]) > len(SubsecventaMax):
+                SubsecventaMax = l[i:j+1]
+    return SubsecventaMax
+
+def testSubsecventaMaxElementePalindroame():
+    assert SubsecventaMaxElementePalindroame([11,12,13,15]) == [11]
+    assert SubsecventaMaxElementePalindroame([11,33,22,12,13]) == [11,33,22]
+    assert SubsecventaMaxElementePalindroame([11,12,33,22,45]) == [33,22]
+    assert SubsecventaMaxElementePalindroame([]) == []
+
 def printMenu():
-    print("1.Citire date")
-    print("2.Determinare cea mai lungă subsecvență cu proprietatea ")
-    print("3.Iesire")
-def citireDate():
+    print("1. Citire lista")
+    print("2. Afisare cea mai lunga subsecventa de palindroame")
+    print("3. Afisare cea mai lunga subsecventa de numere cu cifre prime")
+    print("4.Afisare cea mai lunga subsecventa de numere prime")
+    print("5. Iesire")
+
+def citireLista():
     l = []
-    listAsString = input("Dati lista")
-    numbersAsString = listAsString.split(",")
-    for x in numbersAsString:
+    givenString = input("Dati lista, cu elementele separate prin virgula: ")
+    numberAssString=givenString.split(",")
+    for x in numberAssString:
         l.append(int(x))
     return l
+
+def isPrime(x):
+    if x<2:
+        return False
+    for i in range(2,x//2 +1):
+        if x%i==0:
+            return False
+    return True
+def get_longest_prime_digits(l):
+    for n in l:
+        while n!=0:
+            cif=n%10
+            n = n // 10
+            if isPrime(cif) == False:
+                return False
+    return True
+
+def test_get_longest_prime_digits():
+    assert get_longest_prime_digits([2,3,11]) is False
+    assert get_longest_prime_digits([1,11,13]) is False
+    assert get_longest_prime_digits([121,33,74]) is False
+    assert get_longest_prime_digits([3,5,7,]) is True
+def SubsecventaMaxElementeCifrePrime(l):
+    '''
+    determina cea mai lunga subsecventa de nr. cu cifre prime
+    :param l: lista de nr. intregi
+    :return: cea mai lunga subsecventa de nr. cu cifre prime din l
+    '''
+    SubsecventaMax = []
+    for i in range(len(l)):
+        for j in range(i, len(l)):
+            if get_longest_prime_digits(l[i:j + 1]) and len(l[i:j + 1]) > len(SubsecventaMax):
+                SubsecventaMax = l[i:j + 1]
+    return SubsecventaMax
+def testSubsecventaMaxElementeCifrePrime():
+    assert SubsecventaMaxElementeCifrePrime([33,35,75]) == [33,35,75]
+    assert SubsecventaMaxElementeCifrePrime([10,12,8]) == []
+    assert SubsecventaMaxElementeCifrePrime([]) == []
+    assert SubsecventaMaxElementeCifrePrime([10,11,55,35]) == [55,35]
 def main():
-    TestSubsecventaMaxPrime()
-    test_get_longest_all_primes()
-    l=[]
+    test_get_longest_all_palindromes()
+    testSubsecventaMaxElementePalindroame()
+    test_get_longest_prime_digits()
+    testSubsecventaMaxElementeCifrePrime()
+    l = []
     while True:
         printMenu()
-        optiune = input("dati opriunea:")
-        if optiune == "1":
-            l=citireDate()
-        elif optiune == "2":
-            print(subsecventaMaxPrime(l))
-        elif optiune == "3":
+        optiune = int(input("Da-ti optiunea: "))
+        if optiune == 1:
+            l=citireLista()
+        elif optiune == 2:
+            print(SubsecventaMaxElementePalindroame(l))
+        elif optiune == 3:
+            print(SubsecventaMaxElementeCifrePrime(l))
+        elif optiune == 4:
+            print(SubsecventaMaxElementePrime(l))
+        elif optiune == 5:
             break
         else:
-            print("Optiune gresita")
+            print("Optiune gresita, reincearca")
 main()
